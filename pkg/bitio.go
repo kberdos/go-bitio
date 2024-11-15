@@ -3,5 +3,5 @@ package bitio
 import "fmt"
 
 func Hello() {
-	fmt.Println("hello world")
+	fmt.Println("hello world!")
 }
