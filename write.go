@@ -14,30 +14,28 @@ func (b *Bitio) writebit(one bool) error {
 }
 
 // writes lowest n bits of r
-// FIXME: goes backwards for now lol
 func (b *Bitio) WriteBits(r uint64, n uint8) error {
 	for n > 0 {
-		rr, m, err := b.writefull(r, n)
+		m, err := b.writeamap(r, n)
 		if err != nil {
 			return err
 		}
 		n -= m
-		r = rr
 	}
 	return nil
 }
 
-// writes all possible bits
-func (b *Bitio) writefull(r uint64, n uint8) (uint64, uint8, error) {
-	n = min(n, b.p+1)
-	mask := (1 << n) - 1
-	rb := uint8(r) & uint8(mask)
-	rb <<= b.p + 1 - n
-	b.c |= rb
-	r >>= n
-	if b.p == n-1 {
-		return r, n, b.cache()
+// write 'as much as possible'
+func (b *Bitio) writeamap(r uint64, n uint8) (uint8, error) {
+	sz := min(n, b.p+1)
+	mask := uint64((1 << n) - 1)
+	r &= mask
+	r >>= n - sz
+	r <<= b.p - sz + 1
+	b.c |= uint8(r)
+	if b.p == sz-1 {
+		return sz, b.cache()
 	}
-	b.p -= n
-	return r, n, nil
+	b.p -= sz
+	return sz, nil
 }

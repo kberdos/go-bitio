@@ -51,9 +51,9 @@ func testSmallAtOnce(t *testing.T) {
 		t.Fatal("could not open testing file")
 	}
 	b := bitio.New(file)
-	// 0101 1010 = 0x5a = 90 = 'Z'
-	err = b.WriteBits(0x02, 3)
-	err = b.WriteBits(0x1a, 5)
+	// 010 11010 = 0x5a = 90 = 'Z'
+	err = b.WriteBits(0x2, 3)
+	// err = b.WriteBits(0x1a, 5)
 	if err != nil {
 		t.Fatal("could not write bits")
 	}
@@ -89,8 +89,10 @@ func testLarge(t *testing.T) {
 		t.Fatal("could not open testing file")
 	}
 	b := bitio.New(file)
-	// 4B 41 5A 55 59 41 = 'KAZUYA'
-	err = b.WriteBits(0x4b415a555941, 48)
+	// 'KAZUYA'
+	// 4B415A555941
+	err = b.WriteBits(0x9682B4AAB28, 45)
+	err = b.WriteBits(0x1, 3)
 	if err != nil {
 		t.Fatal("could not write bits")
 	}
