@@ -14,18 +14,18 @@ func NewWriter(w io.Writer) *BitWriter {
 		w:    w,
 		data: make([]byte, 0),
 		c:    0,
-		p:    START_POS,
+		p:    W_START_POS,
 	}
 }
 
 func (bw *BitWriter) cache() error {
 	bw.data = append(bw.data, bw.c)
-	bw.c, bw.p = 0, START_POS
+	bw.c, bw.p = 0, W_START_POS
 	return nil
 }
 
 func (bw *BitWriter) flush() error {
-	if bw.p < START_POS {
+	if bw.p < W_START_POS {
 		bw.cache()
 	}
 	_, err := bw.w.Write(bw.data)
@@ -66,14 +66,16 @@ func (bw *BitWriter) WriteBits(r uint64, n uint8) error {
 // write 'as much as possible'
 func (bw *BitWriter) writeamap(r uint64, n uint8) (uint8, error) {
 	sz := min(n, bw.p+1)
-	mask := uint64((1 << n) - 1)
+	mask := uint64(1<<n - 1)
 	// relevant bytes
 	r &= mask
 	// cut off non-written bytes
 	r >>= n - sz
 	// add trailing 0s to place in correct pos in cache
 	r <<= bw.p - sz + 1
+	// write to the cache
 	bw.c |= uint8(r)
+	// cache if necessary
 	if bw.p == sz-1 {
 		return sz, bw.cache()
 	}

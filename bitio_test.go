@@ -112,15 +112,15 @@ func testLarge(t *testing.T) {
 	if err != nil {
 		t.Fatal("could not open testing file")
 	}
-	bw := bitio.NewWriter(file)
+	b := bitio.NewWriter(file)
 	// 'KAZUYA'
 	// 4B415A555941
-	err = bw.WriteBits(0x9682B4AAB28, 45)
-	err = bw.WriteBits(0x1, 3)
+	err = b.WriteBits(0x9682B4AAB28, 45)
+	err = b.WriteBits(0x1, 3)
 	if err != nil {
 		t.Fatal("could not write bits")
 	}
-	err = bw.Close()
+	err = b.Close()
 	if err != nil {
 		t.Fatal("could not close bitio")
 	}
