@@ -21,13 +21,13 @@ func testBasicWrite(t *testing.T) {
 	if err != nil {
 		t.Fatal("could not open testing file")
 	}
-	b := bitio.New(file)
+	bw := bitio.NewWriter(file)
 	// 0101 0000 = 80
-	b.WriteZero()
-	b.WriteOne()
-	b.WriteZero()
-	b.WriteOne()
-	err = b.Close()
+	bw.WriteZero()
+	bw.WriteOne()
+	bw.WriteZero()
+	bw.WriteOne()
+	err = bw.Close()
 	if err != nil {
 		t.Fatal("could not close bitio")
 	}
@@ -50,14 +50,14 @@ func testSmallAtOnce(t *testing.T) {
 	if err != nil {
 		t.Fatal("could not open testing file")
 	}
-	b := bitio.New(file)
+	bw := bitio.NewWriter(file)
 	// 010 11010 = 0x5a = 90 = 'Z'
-	err = b.WriteBits(0x2, 3)
-	err = b.WriteBits(0x1a, 5)
+	err = bw.WriteBits(0x2, 3)
+	err = bw.WriteBits(0x1a, 5)
 	if err != nil {
 		t.Fatal("could not write bits")
 	}
-	err = b.Close()
+	err = bw.Close()
 	if err != nil {
 		t.Fatal("could not close bitio")
 	}
@@ -80,16 +80,16 @@ func testSmallMulti(t *testing.T) {
 	if err != nil {
 		t.Fatal("could not open testing file")
 	}
-	b := bitio.New(file)
+	bw := bitio.NewWriter(file)
 	// 0101 1010 = 0x5a = 90 = 'Z'
-	err = b.WriteBits(0x02, 3)
-	err = b.WriteBits(0x1a, 5)
+	err = bw.WriteBits(0x02, 3)
+	err = bw.WriteBits(0x1a, 5)
 	// 1000 0001 = 0x41 = 65 = 'A'
-	err = b.WriteBits(0x41, 8)
+	err = bw.WriteBits(0x41, 8)
 	if err != nil {
 		t.Fatal("could not write bits")
 	}
-	err = b.Close()
+	err = bw.Close()
 	if err != nil {
 		t.Fatal("could not close bitio")
 	}
@@ -112,15 +112,15 @@ func testLarge(t *testing.T) {
 	if err != nil {
 		t.Fatal("could not open testing file")
 	}
-	b := bitio.New(file)
+	bw := bitio.NewWriter(file)
 	// 'KAZUYA'
 	// 4B415A555941
-	err = b.WriteBits(0x9682B4AAB28, 45)
-	err = b.WriteBits(0x1, 3)
+	err = bw.WriteBits(0x9682B4AAB28, 45)
+	err = bw.WriteBits(0x1, 3)
 	if err != nil {
 		t.Fatal("could not write bits")
 	}
-	err = b.Close()
+	err = bw.Close()
 	if err != nil {
 		t.Fatal("could not close bitio")
 	}
