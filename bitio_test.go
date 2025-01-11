@@ -9,11 +9,11 @@ import (
 )
 
 func TestBitio(t *testing.T) {
-	t.Run("basic test", testBasic)
+	t.Run("basic write test", testBasicWrite)
 }
 
-func testBasic(t *testing.T) {
-	file, err := os.OpenFile("/tmp/test", os.O_RDWR|os.O_CREATE, 0o666)
+func testBasicWrite(t *testing.T) {
+	file, err := os.Create("/tmp/test")
 	if err != nil {
 		t.Fatal("could not open testing file")
 	}
