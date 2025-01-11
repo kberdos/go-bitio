@@ -8,7 +8,7 @@ type Bitio struct {
 	rw   io.ReadWriter
 	data []byte // all cached bytes
 	c    uint8  // current byte
-	p    int8   // pos START_POS -> 0
+	p    uint8  // pos START_POS -> 0
 }
 
 func New(rw io.ReadWriter) *Bitio {
@@ -27,7 +27,9 @@ func (b *Bitio) cache() error {
 }
 
 func (b *Bitio) flush() error {
-	b.cache()
+	if b.p < START_POS {
+		b.cache()
+	}
 	_, err := b.rw.Write(b.data)
 	if err != nil {
 		return err
