@@ -1,6 +1,8 @@
 package bitio
 
-import "io"
+import (
+	"io"
+)
 
 type Bitio struct {
 	rw   io.ReadWriter
