@@ -53,13 +53,25 @@ func testSmallAtOnce(t *testing.T) {
 	b := bitio.New(file)
 	// 010 11010 = 0x5a = 90 = 'Z'
 	err = b.WriteBits(0x2, 3)
-	// err = b.WriteBits(0x1a, 5)
+	err = b.WriteBits(0x1a, 5)
 	if err != nil {
 		t.Fatal("could not write bits")
 	}
 	err = b.Close()
 	if err != nil {
 		t.Fatal("could not close bitio")
+	}
+	_, err = file.Seek(0, 0)
+	if err != nil {
+		t.Fatal("could not seek to start of file")
+	}
+	buffer := make([]byte, 1)
+	_, err = file.Read(buffer)
+	if err != nil && err != io.EOF {
+		t.Fatal(err)
+	}
+	if buffer[0] != byte(90) {
+		t.Fatalf("incorrect value read from file, %d\n", buffer[0])
 	}
 }
 
@@ -81,6 +93,18 @@ func testSmallMulti(t *testing.T) {
 	if err != nil {
 		t.Fatal("could not close bitio")
 	}
+	_, err = file.Seek(0, 0)
+	if err != nil {
+		t.Fatal("could not seek to start of file")
+	}
+	buffer := make([]byte, 2)
+	_, err = file.Read(buffer)
+	if err != nil && err != io.EOF {
+		t.Fatal(err)
+	}
+	if string(buffer) != "ZA" {
+		t.Fatalf("incorrect value read from file, %d\n", buffer[0])
+	}
 }
 
 func testLarge(t *testing.T) {
@@ -99,5 +123,17 @@ func testLarge(t *testing.T) {
 	err = b.Close()
 	if err != nil {
 		t.Fatal("could not close bitio")
+	}
+	_, err = file.Seek(0, 0)
+	if err != nil {
+		t.Fatal("could not seek to start of file")
+	}
+	buffer := make([]byte, 6)
+	_, err = file.Read(buffer)
+	if err != nil && err != io.EOF {
+		t.Fatal(err)
+	}
+	if string(buffer) != "KAZUYA" {
+		t.Fatalf("incorrect value read from file, %d\n", buffer[0])
 	}
 }
