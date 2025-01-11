@@ -6,7 +6,7 @@ type Bitio struct {
 	rw   io.ReadWriter
 	data []byte // all cached bytes
 	c    uint8  // current byte
-	p    uint8  // pos START_POS -> 0
+	p    int8   // pos START_POS -> 0
 }
 
 func New(rw io.ReadWriter) *Bitio {

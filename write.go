@@ -8,7 +8,7 @@ func (b *Bitio) write(add bool) error {
 		b.c += 2 << b.p
 	}
 	b.p--
-	if b.p == 0 {
+	if b.p == -1 {
 		return b.cache()
 	}
 	return nil
