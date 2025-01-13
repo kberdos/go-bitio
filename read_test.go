@@ -17,7 +17,10 @@ func testReadSmall(t *testing.T) {
 	if err != nil {
 		t.Fatal("error opening file", err)
 	}
-	bw := bitio.NewReader(file)
+	bw, err := bitio.NewReader(file)
+	if err != nil {
+		t.Fatal("error creating reader", err)
+	}
 	x, err := bw.ReadBits(8)
 	if err != nil {
 		t.Fatal("error reading from file", err)

@@ -12,12 +12,17 @@ type BitReader struct {
 	p uint8 // pos START_POS -> 0
 }
 
-func NewReader(r io.Reader) *BitReader {
-	return &BitReader{
+func NewReader(r io.Reader) (*BitReader, error) {
+	br := &BitReader{
 		r: r,
 		c: 0,
 		p: R_START_POS,
 	}
+	err := br.fill()
+	if err != nil {
+		return nil, err
+	}
+	return br, nil
 }
 
 func (br *BitReader) fill() error {
