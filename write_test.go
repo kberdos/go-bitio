@@ -8,7 +8,7 @@ import (
 	"github.com/kberdos/go-bitio"
 )
 
-func TestBitio(t *testing.T) {
+func TestWrite(t *testing.T) {
 	t.Run("basic write test", testBasicWrite)
 	t.Run("write < 8 bits at once", testSmallAtOnce)
 	t.Run("write < 8 bits, multi-byte ", testSmallMulti)

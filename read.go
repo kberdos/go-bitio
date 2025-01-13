@@ -47,6 +47,7 @@ func (br *BitReader) ReadBits(n uint8) (uint64, error) {
 	return res, nil
 }
 
+// read 'as much as possible'
 func (br *BitReader) readamap(res uint64, n uint8) (uint64, uint8, error) {
 	sz := min(n, br.p+1)
 	mask := uint64(1<<br.p - 1)
